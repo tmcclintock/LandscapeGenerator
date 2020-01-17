@@ -1,7 +1,7 @@
-from .LandscapeGenerator import Landscape
+from .LandscapeGenerator import LGenerator
 
 # Avoid pyflakes compaints
-assert Landscape
+assert LGenerator
 
 __author__ = "Tom McClintock <thmsmcclintock@gmail.com"
 __version__ = "0.1.0"
