@@ -22,7 +22,8 @@ class LGenerator(object):
         assert field_of_view[0][0] != field_of_view[0][1]
         assert field_of_view[1][0] != field_of_view[1][1]
 
-        assert "scene" in features
+        if "scene" not in features:
+            features["scene"] = "grassy-field"
                     
         self.dimensions = dimensions
         self.field_of_view = np.asarray(field_of_view)
@@ -34,19 +35,22 @@ class LGenerator(object):
             np.random.seed(seed)
 
         M, N = self.dimensions
+        rgb = np.zeros([M, N, 3])
+        
+        #vertical angle goes from 30 deg to -30 deg
+        #this ordering accommodates matlpotlib's imshow default configuration
+        theta_min, theta_max = self._FOV_rad[0]
+        theta = np.linspace(theta_max, theta_min, M)
+        #azimuthal angle goes from -30 to M,N * 30 degrees
+        phi_min, phi_max = self._FOV_rad[1]
+        phi = np.linspace(phi_min, phi_max, N)
+        THETA, PHI = np.meshgrid(theta, phi, indexing="ij")
+        
         #Scene is always in features
         if self.features["scene"] == "grassy-field":
-            rgb = np.zeros([M, N, 3])
-
-            #vertical angle goes from 30 deg to -30 deg
-            #this ordering accommodates matlpotlib's imshow default configuration
-            theta_min, theta_max = self._FOV_rad[0]
-            theta = np.linspace(np.pi/6, -np.pi/6, M)
+            #Split by the horizon
             M_low = len(theta[theta <= 0])
             M_hi = len(theta[theta > 0])
-            #azimuthal angle goes from -30 to M,N * 30 degrees
-            theta_min, theta_max = self._FOV_rad[1]
-            phi = np.linspace(theta_min, theta_max, N)
 
             #First, draw small rs
             rgb[:, :, 0] = np.random.poisson(50, size=M*N).reshape((M, N))
@@ -61,6 +65,23 @@ class LGenerator(object):
             for i in range(0, M//2):
                 rgb[M//2 - 1 - i, :, 0] += np.random.poisson(100//(i+1), size=N)
 
+        if "has_sun" in self.features:
+            t, p = self.features["has_sun"] #theta and phi
+            t, p = t * np.pi/180, p * np.pi/180 #convert degree coordinates to radians
+            ti = np.where(np.abs(theta - t))
+            pj = np.where(np.abs(phi - p))
+
+            #From Earth, the sun is 0.5 deg in diameter (~pi/360 radians)
+            #diameter = 
+            sin_t, cos_t = np.sin(t), np.cos(t)
+            #Compute angular distances
+            D = np.arccos(np.sin(THETA) * sin_t + np.cos(THETA) * cos_t * np.cos(PHI-p))
+            for i in range(M):
+                for j in range(N):
+                    if D[i, j] < np.pi/180:
+                        rgb[i, j, :2] = np.random.poisson(230, size=2)
+                        rgb[i, j, 2] = np.random.poisson(50)
+
         if return_angular_coords:
-            return np.clip(rgb/255., 0, 1), np.meshgrid(theta, phi, indexing="ij")
+            return np.clip(rgb/255., 0, 1), [THETA, PHI]
         return np.clip(rgb/255., 0, 1)
