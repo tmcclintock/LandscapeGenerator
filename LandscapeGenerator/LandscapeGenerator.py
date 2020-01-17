@@ -21,6 +21,8 @@ class LGenerator(object):
         assert np.shape(field_of_view) == (2,2)
         assert field_of_view[0][0] != field_of_view[0][1]
         assert field_of_view[1][0] != field_of_view[1][1]
+
+        assert "scene" in features
                     
         self.dimensions = dimensions
         self.field_of_view = np.asarray(field_of_view)
@@ -32,6 +34,7 @@ class LGenerator(object):
             np.random.seed(seed)
 
         M, N = self.dimensions
+        #Scene is always in features
         if self.features["scene"] == "grassy-field":
             rgb = np.zeros([M, N, 3])
 

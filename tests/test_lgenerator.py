@@ -33,6 +33,10 @@ def test_assertions():
     with npt.assert_raises(AssertionError):
         LG.LGenerator([100, 200], [[0, 10], [0, 0]])
 
+    #Missing scene feature
+    with npt.assert_raises(AssertionError):
+        LG.LGenerator([100, 200], features={})
+
 def test_generate():
     M, N = 300, 200
     L = LG.LGenerator([M, N])
