@@ -31,8 +31,8 @@ class LGenerator(object):
             theta = np.linspace(np.pi/6, -np.pi/6, M)
             M_low = len(theta[theta <= 0])
             M_hi = len(theta[theta > 0])
-            #azimuthal angle goes from 0 to M,N * 60 degrees
-            phi = np.linspace(0, float(M)/N * np.pi/3, N)
+            #azimuthal angle goes from -30 to M,N * 30 degrees
+            phi = np.linspace(-float(M)/N * np.pi/6, float(M)/N * np.pi/6, N)
 
             #First, draw small rs
             rgb[:, :, 0] = np.random.poisson(50, size=M*N).reshape((M, N))
