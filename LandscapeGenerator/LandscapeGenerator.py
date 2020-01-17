@@ -9,13 +9,22 @@ class LGenerator(object):
         kind (string): 
 
     """
-    def __init__(self, dimensions, features = {"scene": "grassy-field"}):
+    def __init__(self, dimensions,
+                 fields_of_view = [[-30, 30], [-30, 30]],
+                 features = {"scene": "grassy-field"}):
+
+        #Asserts to check the input
         assert len(dimensions) == 2
         assert len(np.shape(dimensions)) == 1
         assert dimensions[0] > 0
         assert dimensions[1] > 0
-        
+        assert np.shape(fields_of_view) == (2,2)
+        assert fields_of_view[0][0] != fields_of_view[0][1]
+        assert fields_of_view[1][0] != fields_of_view[1][1]
+                    
         self.dimensions = dimensions
+        self.fields_of_view = np.asarray(fields_of_view)
+        self._FOV_rad = self.fields_of_view * np.pi/180
         self.features = features
 
     def generate(self, seed = None, return_angular_coords = False):

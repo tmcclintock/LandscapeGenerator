@@ -4,10 +4,14 @@ import numpy.testing as npt
 import pytest
 
 def test_LGenerator():
-    #Smoke test
+    #Smoke tests
     L = LG.LGenerator([300, 200])
+    L = LG.LGenerator([300, 200],
+                      fields_of_view = [[-20, 20], [-30, 30]])
+
 
 def test_assertions():
+    #Test pixel dimensions
     with npt.assert_raises(AssertionError):
         LG.LGenerator([0])
     with npt.assert_raises(AssertionError):
@@ -18,6 +22,17 @@ def test_assertions():
         LG.LGenerator([-100, 200])
     with npt.assert_raises(AssertionError):
         LG.LGenerator([100, -200])
+    #Test fields of view
+    with npt.assert_raises(AssertionError):
+        LG.LGenerator([100, 200], [[0, 10, 20], [10, 20]])
+    with npt.assert_raises(AssertionError):
+        LG.LGenerator([100, 200], [[0, 10], [0, 10, 20]])
+    with npt.assert_raises(AssertionError):
+        LG.LGenerator([100, 200], [[10, 20], [10, 20], [10, 20]])
+    with npt.assert_raises(AssertionError):
+        LG.LGenerator([100, 200], [[0, 0], [0, 10]])
+    with npt.assert_raises(AssertionError):
+        LG.LGenerator([100, 200], [[0, 10], [0, 0]])
 
 def test_generate():
     M, N = 300, 200
