@@ -8,8 +8,7 @@ def test_LGenerator():
     L = LG.LGenerator([300, 200])
     L = LG.LGenerator([300, 200],
                       field_of_view = [[-20, 20], [-30, 30]])
-
-
+    
 def test_assertions():
     #Test pixel dimensions
     with npt.assert_raises(AssertionError):
@@ -48,5 +47,9 @@ def test_generate():
     npt.assert_equal(t.shape, p.shape)
     npt.assert_equal(t.shape, [M, N])
 
+    rgb1 = L.generate(seed = 123)
+    rgb2 = L.generate(seed = 123)
+    npt.assert_equal(rgb1, rgb2)
+    
 #if __name__ == "__main__":
 #    test_generate()

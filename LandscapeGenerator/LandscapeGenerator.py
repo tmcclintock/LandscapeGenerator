@@ -29,7 +29,7 @@ class LGenerator(object):
 
     def generate(self, seed = None, return_angular_coords = False):
         if seed:
-            np.random.set_seed(seed)
+            np.random.seed(seed)
 
         M, N = self.dimensions
         if self.features["scene"] == "grassy-field":
