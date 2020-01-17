@@ -3,19 +3,27 @@ import numpy as np
 class LGenerator(object):
     """Object for generating landscapes.
 
+    Args:
+        dimensions (array): 1D list of length 2 that is
+            M (number of rows) by N (number of columns)
+        kind (string): 
+
     """
-    def __init__(self, dimensions, kind="grassy-field"):
+    def __init__(self, dimensions, features = {"scene": "grassy-field"}):
         assert len(dimensions) == 2
         assert len(np.shape(dimensions)) == 1
+        assert dimensions[0] > 0
+        assert dimensions[1] > 0
+        
         self.dimensions = dimensions
-        self.kind = kind
+        self.features = features
 
     def generate(self, seed = None):
         if seed:
             np.random.set_seed(seed)
 
         M, N = self.dimensions
-        if self.kind == "grassy-field":
+        if self.features["scene"] == "grassy-field":
             rgb = np.zeros([M, N, 3])
 
             #vertical angle goes from 30 deg to -30 deg
