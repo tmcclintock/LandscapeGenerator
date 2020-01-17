@@ -18,7 +18,7 @@ class LGenerator(object):
         self.dimensions = dimensions
         self.features = features
 
-    def generate(self, seed = None):
+    def generate(self, seed = None, return_angular_coords = False):
         if seed:
             np.random.set_seed(seed)
 
@@ -47,4 +47,6 @@ class LGenerator(object):
             for i in range(0, M//2):
                 rgb[M//2 - 1 - i, :, 0] += np.random.poisson(100//(i+1), size=N)
 
+        if return_angular_coords:
+            return np.clip(rgb/255., 0, 1), np.meshgrid(theta, phi, indexing="ij")
         return np.clip(rgb/255., 0, 1)
