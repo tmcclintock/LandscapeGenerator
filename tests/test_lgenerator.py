@@ -7,7 +7,7 @@ def test_LGenerator():
     #Smoke tests
     L = LG.LGenerator([300, 200])
     L = LG.LGenerator([300, 200],
-                      fields_of_view = [[-20, 20], [-30, 30]])
+                      field_of_view = [[-20, 20], [-30, 30]])
 
 
 def test_assertions():

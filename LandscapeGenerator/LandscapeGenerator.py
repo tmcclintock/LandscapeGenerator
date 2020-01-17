@@ -10,7 +10,7 @@ class LGenerator(object):
 
     """
     def __init__(self, dimensions,
-                 fields_of_view = [[-30, 30], [-30, 30]],
+                 field_of_view = [[-30, 30], [-30, 30]],
                  features = {"scene": "grassy-field"}):
 
         #Asserts to check the input
@@ -18,13 +18,13 @@ class LGenerator(object):
         assert len(np.shape(dimensions)) == 1
         assert dimensions[0] > 0
         assert dimensions[1] > 0
-        assert np.shape(fields_of_view) == (2,2)
-        assert fields_of_view[0][0] != fields_of_view[0][1]
-        assert fields_of_view[1][0] != fields_of_view[1][1]
+        assert np.shape(field_of_view) == (2,2)
+        assert field_of_view[0][0] != field_of_view[0][1]
+        assert field_of_view[1][0] != field_of_view[1][1]
                     
         self.dimensions = dimensions
-        self.fields_of_view = np.asarray(fields_of_view)
-        self._FOV_rad = self.fields_of_view * np.pi/180
+        self.field_of_view = np.asarray(field_of_view)
+        self._FOV_rad = self.field_of_view * np.pi/180
         self.features = features
 
     def generate(self, seed = None, return_angular_coords = False):
@@ -37,11 +37,13 @@ class LGenerator(object):
 
             #vertical angle goes from 30 deg to -30 deg
             #this ordering accommodates matlpotlib's imshow default configuration
+            theta_min, theta_max = self._FOV_rad[0]
             theta = np.linspace(np.pi/6, -np.pi/6, M)
             M_low = len(theta[theta <= 0])
             M_hi = len(theta[theta > 0])
             #azimuthal angle goes from -30 to M,N * 30 degrees
-            phi = np.linspace(-float(M)/N * np.pi/6, float(M)/N * np.pi/6, N)
+            theta_min, theta_max = self._FOV_rad[1]
+            phi = np.linspace(theta_min, theta_max, N)
 
             #First, draw small rs
             rgb[:, :, 0] = np.random.poisson(50, size=M*N).reshape((M, N))
