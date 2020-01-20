@@ -42,7 +42,7 @@ class GrassFeature(object):
     def generate(self, LG):
         M, N = LG.dimensions
         theta = LG._angles[0]
-        M_low = len(theta[theta <= self.theta_boundary])
+        M_low = len(theta[theta <= self.theta_boundary*np.pi/180.])
         if M_low == 0:
             return
         means = self.rgb_means
