@@ -1,5 +1,5 @@
 import LandscapeGenerator as LG
-import LandscapeGenerator.Features as LGF
+import LandscapeGenerator.BackgroundFeatures as LGF
 import numpy as np
 import numpy.testing as npt
 import pytest

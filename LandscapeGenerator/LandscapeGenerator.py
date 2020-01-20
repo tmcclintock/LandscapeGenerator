@@ -11,7 +11,8 @@ class LGenerator(object):
     """
     def __init__(self, dimensions,
                  field_of_view = [[-30, 30], [-30, 30]],
-                 features = []):
+                 features = [],
+                 height = 1):
                  
         #Asserts to check the input
         assert len(dimensions) == 2
@@ -27,6 +28,7 @@ class LGenerator(object):
         self.field_of_view = np.asarray(field_of_view)
         self._FOV_rad = self.field_of_view * np.pi/180
         self.features = features
+        self.height = height
 
         self.reset_canvas()
         
