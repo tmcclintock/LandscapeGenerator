@@ -42,7 +42,7 @@ def test_generate():
     npt.assert_equal(len(rgb[0][0]), 3)
     npt.assert_equal(rgb.shape, (M, N, 3))
 
-    rgb, [t, p] = L.generate(return_angular_coords = True)
+    t, p = L.get_angular_coordinates()
     npt.assert_equal(np.shape(rgb[:, :, 0]), t.shape)
     npt.assert_equal(t.shape, p.shape)
     npt.assert_equal(t.shape, [M, N])
