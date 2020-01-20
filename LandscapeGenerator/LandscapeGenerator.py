@@ -44,6 +44,10 @@ class LGenerator(object):
         self._angles = [theta, phi]
         self._angles_mesh = np.meshgrid(theta, phi, indexing="ij")
         return
+
+    def clear_features(self):
+        self.features = []
+        return
     
     def add_feature(self, feature):
         self.features.append(feature)

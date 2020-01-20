@@ -16,12 +16,14 @@ class SkyFeature(object):
     def generate(self, LG):
         M, N = LG.dimensions
         theta = LG._angles[0]
-        M_hi = len(theta[theta > self.theta_boundary])
+        M_hi = len(theta[theta > self.theta_boundary*np.pi/180])
         means = self.rgb_means
         SDs = self.rgb_SDs
         #Loop over colors and draw
+        if M_hi == 0:
+            return
         for i in range(3):
-            LG.rgb[theta > self.theta_boundary, :, i] = \
+            LG.rgb[theta > self.theta_boundary * np.pi/180, :, i] = \
                 means[i] + SDs[i]*npr.randn(M_hi * N).reshape((M_hi, N))
         return
 
@@ -41,11 +43,13 @@ class GrassFeature(object):
         M, N = LG.dimensions
         theta = LG._angles[0]
         M_low = len(theta[theta <= self.theta_boundary])
+        if M_low == 0:
+            return
         means = self.rgb_means
         SDs = self.rgb_SDs
         #Loop over colors and draw
         for i in range(3):
-            LG.rgb[theta <= self.theta_boundary, :, i] = \
+            LG.rgb[theta <= self.theta_boundary*np.pi/180, :, i] = \
                 means[i] + SDs[i]*npr.randn(M_low * N).reshape((M_low, N))
         return
 
@@ -97,7 +101,7 @@ class SkyGradientFeature(object):
     def generate(self, LG):
         M, N = LG.dimensions
         theta = LG._angles[0]
-        M_hi = len(theta[theta > self.theta_boundary])
+        M_hi = len(theta[theta > self.theta_boundary*np.pi/180])
         peaks = self.rgb_peaks
         betas = 1./np.asarray(self.decay_rates)
         #Loop over colors and draw
