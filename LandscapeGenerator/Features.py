@@ -1,23 +1,7 @@
 import numpy as np
 import numpy.random as npr
-from LandscapeGenerator import LGenerator
 
-from abc import ABCMeta, abstractmethod
-try:
-    from six import with_metaclass
-except ImportError:
-    from future.utils import with_metaclass
-
-class Feature(with_metaclass(ABCMeta, object)):
-    """All actual features extend this class.
-
-    """
-
-    @abstractmethod
-    def generate(self, LGenerator):
-        pass
-
-class SkyFeature(Feature):
+class SkyFeature(object):
     def __init__(self, **kwargs):
         # all those keys will be initialized as class attributes
         allowed_keys = ['theta_boundary', 'rgb_means', 'rgb_SDs']
@@ -29,7 +13,7 @@ class SkyFeature(Feature):
         self.__dict__.update((key, value) for key, value in
                              kwargs.items() if key in allowed_keys)
 
-    def generate(self, LG: LandscapeGenerator):
+    def generate(self, LG):
         M, N = LG.dimensions
         theta = LG._angles[0]
         M_hi = len(theta[theta > self.theta_boundary])
@@ -41,7 +25,7 @@ class SkyFeature(Feature):
                 means[i] + SDs[i]*npr.randn(M_hi * N).reshape((M_hi, N))
         return
 
-class GrassFeature(Feature):
+class GrassFeature(object):
     def __init__(self, **kwargs):
         # all those keys will be initialized as class attributes
         allowed_keys = ['theta_boundary', 'rgb_means', 'rgb_SDs']
@@ -53,7 +37,7 @@ class GrassFeature(Feature):
         self.__dict__.update((key, value) for key, value in
                              kwargs.items() if key in allowed_keys)
 
-    def generate(self, LG: LandscapeGenerator):
+    def generate(self, LG):
         M, N = LG.dimensions
         theta = LG._angles[0]
         M_low = len(theta[theta <= self.theta_boundary])
@@ -65,7 +49,7 @@ class GrassFeature(Feature):
                 means[i] + SDs[i]*npr.randn(M_low * N).reshape((M_low, N))
         return
 
-class SunFeature(Feature):
+class SunFeature(object):
     def __init__(self, **kwargs):
         # all those keys will be initialized as class attributes
         allowed_keys = ['theta', 'phi', 'angular_diameter',
@@ -78,11 +62,12 @@ class SunFeature(Feature):
         self.__dict__.update((key, value) for key, value in
                              kwargs.items() if key in allowed_keys)
 
-    def generate(self, LG: LandscapeGenerator):
+    def generate(self, LG):
         M, N = LG.dimensions
         t, p = self.theta, self.phi
         t, p = t * np.pi/180, p * np.pi/180
         theta, phi = LG._angles
+        THETA, PHI = LG._angles_mesh
         ti = np.where(np.abs(theta - t))
         pj = np.where(np.abs(phi - p))
         sin_t, cos_t = np.sin(t), np.cos(t)
@@ -94,32 +79,32 @@ class SunFeature(Feature):
         for i in range(M):
             for j in range(N):
                 if D[i, j] < diameter:
-                    rgb[i, j] = means + SDs * npr.randn(3)
+                    LG.rgb[i, j] = means + SDs * npr.randn(3)
         return
 
-class SkyGradientFeature(Feature):
+class SkyGradientFeature(object):
     def __init__(self, **kwargs):
         # all those keys will be initialized as class attributes
-        
-        allowed_keys = ['theta_boundary', 'rgb_peak', 'decay_rates']
-        default_values = [0, 2, [100, 0, 0], [1, 1, 1]]
+        allowed_keys = ['theta_boundary', 'rgb_peaks', 'decay_rates']
+        default_values = [0, [100, 0, 0], [1, 1, 1]]
         # initialize all allowed keys to defaults
         self.__dict__.update((key, value) for key, value in
                              zip(allowed_keys, default_values))
         # and update the given keys by their given values
         self.__dict__.update((key, value) for key, value in
                              kwargs.items() if key in allowed_keys)
-
-    def generate(self, LG: LandscapeGenerator):
+    
+    def generate(self, LG):
         M, N = LG.dimensions
         theta = LG._angles[0]
         M_hi = len(theta[theta > self.theta_boundary])
         peaks = self.rgb_peaks
-        betas = 1./self.decay_rates
+        betas = 1./np.asarray(self.decay_rates)
         #Loop over colors and draw
         for i in range(M_hi):
             for c in range(3):
                 LG.rgb[M_hi - 1 - i, :, c] += \
-                    peaks[c] * npr.exponential(scale = betas[c], N)
+                    peaks[c] * npr.exponential(scale = betas[c] / (i + 1),
+                                               size = N)
         return
 

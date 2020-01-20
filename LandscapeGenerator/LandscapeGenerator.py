@@ -1,5 +1,4 @@
 import numpy as np
-#from .Features import *
 
 class LGenerator(object):
     """Object for generating landscapes.
@@ -47,7 +46,7 @@ class LGenerator(object):
         return
     
     def add_feature(self, feature):
-        features.append(feature)
+        self.features.append(feature)
         return
 
     def get_angular_coordinates(self):

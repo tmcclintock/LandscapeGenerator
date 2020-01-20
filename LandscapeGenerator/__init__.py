@@ -1,4 +1,5 @@
 from .LandscapeGenerator import LGenerator
+from .Features import *
 
 # Avoid pyflakes compaints
 assert LGenerator
