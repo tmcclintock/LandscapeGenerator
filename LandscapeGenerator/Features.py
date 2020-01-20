@@ -58,7 +58,7 @@ class SunFeature(object):
         # all those keys will be initialized as class attributes
         allowed_keys = ['theta', 'phi', 'angular_diameter',
                         'rgb_means', 'rgb_SDs']
-        default_values = [15, 0, 2, [230, 230, 50], [15, 15, 7]]
+        default_values = [15, 5, 2, [230, 230, 50], [15, 15, 7]]
         # initialize all allowed keys to defaults
         self.__dict__.update((key, value) for key, value in
                              zip(allowed_keys, default_values))
