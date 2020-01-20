@@ -8,7 +8,7 @@ class TreeFeature(object):
                         'leaf_rgb_means', 'leaf_rgb_SDs',
                         'trunk_rgb_means', 'trunk_rgb_SDs']
         default_values = [3, 1.5, 30, 10,
-                          [80, 160, 100], [2, 2, 2],
+                          [80, 160, 100], [2, 20, 2],
                           [105, 75, 50], [2, 2, 2]]
         # initialize all allowed keys to defaults
         self.__dict__.update((key, value) for key, value in

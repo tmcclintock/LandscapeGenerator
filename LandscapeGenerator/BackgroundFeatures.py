@@ -31,7 +31,7 @@ class GrassFeature(object):
     def __init__(self, **kwargs):
         # all those keys will be initialized as class attributes
         allowed_keys = ['theta_boundary', 'rgb_means', 'rgb_SDs']
-        default_values = [0, [50, 160, 70], [7, 12, 8]]
+        default_values = [0, [50, 160, 70], [4, 8, 4]]
         # initialize all allowed keys to defaults
         self.__dict__.update((key, value) for key, value in
                              zip(allowed_keys, default_values))
@@ -82,7 +82,7 @@ class SunFeature(object):
         SDs = self.rgb_SDs
         for i in range(M):
             for j in range(N):
-                if D[i, j] < diameter:
+                if D[i, j] < diameter and theta[i] > 0:
                     LG.rgb[i, j] = means + SDs * npr.randn(3)
         return
 
