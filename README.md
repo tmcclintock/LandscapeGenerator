@@ -16,7 +16,7 @@ The requirements are:
 * `numpy`
 * `scipy`
 * `pytest` (for testing)
-* `notebook` (for notebooks
+* `notebook` (for notebooks)
 * `matplotlib` (for notebooks)
 
 ## Usage
