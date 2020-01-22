@@ -30,9 +30,9 @@ class LGenerator(object):
         self.features = features
         self.height = height
 
-        self.reset_canvas()
+        self.create_canvas()
         
-    def reset_canvas(self):
+    def create_canvas(self):
         M, N = self.dimensions
         self.rgb = np.zeros([M, N, 3])
 
@@ -45,6 +45,10 @@ class LGenerator(object):
         phi = np.linspace(phi_min, phi_max, N)
         self._angles = [theta, phi]
         self._angles_mesh = np.meshgrid(theta, phi, indexing="ij")
+        return
+
+    def reset_canvas(self):
+        self.rgb = np.zeros([self.dimensions[0], self.dimensions[1], 3])
         return
 
     def clear_features(self):

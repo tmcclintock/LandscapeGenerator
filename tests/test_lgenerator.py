@@ -50,6 +50,14 @@ def test_generate():
     rgb1 = L.generate(seed = 123)
     rgb2 = L.generate(seed = 123)
     npt.assert_equal(rgb1, rgb2)
+
+def test_reset_features():
+    M, N = 300, 200
+    L = LG.LGenerator([M, N])
+    rgb1 = L.generate(seed=1)
+    L.reset_canvas()
+    rgb2 = L.generate(seed=1)
+    npt.assert_equal(rgb1, rgb2)
     
 #if __name__ == "__main__":
 #    test_generate()
