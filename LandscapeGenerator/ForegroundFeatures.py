@@ -50,10 +50,13 @@ class TreeFeature(object):
                 dy = np.fabs(ht - LG.height - yprime) #distances from center of tree leaves
                 dw = np.sqrt(rt**2 - dy**2) #half of chord length
                 dphi = np.arctan(dw / x)
-                N_leaves = len(phi[(phi > p - dphi) * \
-                       (phi < p + dphi)])
-                LG.rgb[m, (phi > p - dphi) * \
-                       (phi < p + dphi), :]\
+                leaves_phi_mask = (phi > p - dphi) * (phi < p + dphi) + \
+                    (phi > p - dphi + 2*np.pi) + \
+                    (phi < p + dphi - 2*np.pi)
+                N_leaves = len(phi[leaves_phi_mask])
+                #N_leaves = len(phi[(phi > p - dphi) * \
+                #                   (phi < p + dphi)])
+                LG.rgb[m, leaves_phi_mask, :]\
                        = self.leaf_rgb_means + self.leaf_rgb_SDs * \
                        npr.randn(N_leaves, 3)
         """
