@@ -18,5 +18,12 @@ def test_TreeFeature():
     npt.assert_equal(len(rgb[0][0]), 3)
     npt.assert_equal(rgb.shape, (M, N, 3))
 
+def test_Tree_locations():
+    M, N = 300, 200
+    FOV = [[-10, 20], [0, 360]]
+    L = LG.LGenerator([M, N], field_of_view=FOV)
+    L.add_feature(LGF.TreeFeature(phi=0))
+    rgb = L.generate()
+
 if __name__ == "__main__":
     test_TreeFeature()
