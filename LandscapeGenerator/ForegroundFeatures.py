@@ -31,14 +31,16 @@ class TreeFeature(object):
         theta_top = np.arctan2(ht - LG.height + rt, x)
         #Draw the trunk and assume that the width of the trunk is 0.5 m
         dphi_trunk = np.arctan(1./(4 * x)) #half width of trunk
-        N_trunk = len(phi[(phi > p - dphi_trunk) * \
-                       (phi < p + dphi_trunk)])
+        trunk_phi_mask = (phi > p - dphi_trunk) * (phi < p + dphi_trunk) + \
+            (phi > p - dphi_trunk + 2*np.pi) + \
+            (phi < p + dphi_trunk - 2*np.pi)
+        N_trunk = len(phi[trunk_phi_mask])
         for m in range(M):
             if (theta[m] > theta_bottom) and (theta[m] < theta_leaves):
-                LG.rgb[m, (phi > p - dphi_trunk) * \
-                       (phi < p + dphi_trunk), :]\
+                LG.rgb[m, trunk_phi_mask, :]\
                        = self.trunk_rgb_means + self.trunk_rgb_SDs * \
                        npr.randn(N_trunk, 3)
+
                 if N_trunk == 0:
                     LG.rgb[m, np.argmin(np.fabs(phi - p)), :]\
                         = self.trunk_rgb_means + self.trunk_rgb_SDs * \
@@ -54,4 +56,20 @@ class TreeFeature(object):
                        (phi < p + dphi), :]\
                        = self.leaf_rgb_means + self.leaf_rgb_SDs * \
                        npr.randn(N_leaves, 3)
+        """
+        #Draw the leaves
+        t = np.arctan2(ht, x) #center of the leaves
+        THETA, PHI = LG._angles_mesh
+        diameter = 2 * np.arctan2(rt, x)
+        ti = np.where(np.abs(theta - t))
+        pj = np.where(np.abs(phi - p))
+        sin_t, cos_t = np.sin(t), np.cos(t)
+        D = np.arccos(np.sin(THETA) * sin_t +\
+                      np.cos(THETA) * cos_t * np.cos(PHI-p))
+        for i in range(M):
+            for j in range(N):
+                if D[i, j] < diameter and theta[i] > 0:
+                    LG.rgb[i, j] = self.leaf_rgb_means\
+                        + self.leaf_rgb_SDs * npr.randn(3)
+        """
         return
