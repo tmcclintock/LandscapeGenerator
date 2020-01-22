@@ -54,6 +54,10 @@ class GrassFeature(object):
         return
 
 class SunFeature(object):
+    """
+    
+    Note: the sun will automatically wrap around in the azimuthal direction.
+    """
     def __init__(self, **kwargs):
         # all those keys will be initialized as class attributes
         allowed_keys = ['theta', 'phi', 'angular_diameter',
