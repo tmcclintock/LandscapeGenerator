@@ -94,7 +94,7 @@ class SkyGradientFeature(object):
     def __init__(self, **kwargs):
         # all those keys will be initialized as class attributes
         allowed_keys = ['theta_boundary', 'rgb_peaks', 'decay_rates']
-        default_values = [0, [100, 0, 0], [1, 1, 1]]
+        default_values = [0, [100, 0, 0], [100]*3]
         # initialize all allowed keys to defaults
         self.__dict__.update((key, value) for key, value in
                              zip(allowed_keys, default_values))
@@ -108,11 +108,13 @@ class SkyGradientFeature(object):
         M_hi = len(theta[theta > self.theta_boundary*np.pi/180])
         peaks = self.rgb_peaks
         betas = 1./np.asarray(self.decay_rates)
+        #Compute the polar angular size of a pixel
+        dtheta = (LG._FOV_rad[0, 1] - LG._FOV_rad[0, 0]) / M
         #Loop over colors and draw
         for i in range(M_hi):
             for c in range(3):
                 LG.rgb[M_hi - 1 - i, :, c] += \
-                    peaks[c] * npr.exponential(scale = betas[c] / (i + 1),
+                    peaks[c] * npr.exponential(scale = betas[c] / (dtheta*(i + 1)),
                                                size = N)
         return
 
