@@ -20,21 +20,19 @@ class LGenerator(object):
         assert dimensions[0] > 0
         assert dimensions[1] > 0
         assert np.shape(field_of_view) == (2,2)
-        assert field_of_view[0][0] != field_of_view[0][1]
-        assert field_of_view[1][0] != field_of_view[1][1]
         assert type(features) == list
 
         self.dimensions = dimensions
-        self.field_of_view = np.asarray(field_of_view)
-        self._FOV_rad = self.field_of_view * np.pi/180
         self.features = features
         self.height = height
-
-        self.create_canvas()
+        self.set_field_of_view(field_of_view)
 
     def set_field_of_view(self, field_of_view):
+        assert field_of_view[0][0] != field_of_view[0][1]
+        assert field_of_view[1][0] != field_of_view[1][1]
         self.field_of_view = np.asarray(field_of_view)
         self._FOV_rad = self.field_of_view * np.pi/180
+        self.create_canvas()
         return
         
     def create_canvas(self):
