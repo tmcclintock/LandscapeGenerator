@@ -31,6 +31,11 @@ class LGenerator(object):
         self.height = height
 
         self.create_canvas()
+
+    def set_field_of_view(self, field_of_view):
+        self.field_of_view = np.asarray(field_of_view)
+        self._FOV_rad = self.field_of_view * np.pi/180
+        return
         
     def create_canvas(self):
         M, N = self.dimensions
