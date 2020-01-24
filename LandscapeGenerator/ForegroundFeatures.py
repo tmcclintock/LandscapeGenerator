@@ -54,25 +54,7 @@ class TreeFeature(object):
                     (phi > p - dphi + 2*np.pi) + \
                     (phi < p + dphi - 2*np.pi)
                 N_leaves = len(phi[leaves_phi_mask])
-                #N_leaves = len(phi[(phi > p - dphi) * \
-                #                   (phi < p + dphi)])
                 LG.rgb[m, leaves_phi_mask, :]\
                        = self.leaf_rgb_means + self.leaf_rgb_SDs * \
                        npr.randn(N_leaves, 3)
-        """
-        #Draw the leaves
-        t = np.arctan2(ht, x) #center of the leaves
-        THETA, PHI = LG._angles_mesh
-        diameter = 2 * np.arctan2(rt, x)
-        ti = np.where(np.abs(theta - t))
-        pj = np.where(np.abs(phi - p))
-        sin_t, cos_t = np.sin(t), np.cos(t)
-        D = np.arccos(np.sin(THETA) * sin_t +\
-                      np.cos(THETA) * cos_t * np.cos(PHI-p))
-        for i in range(M):
-            for j in range(N):
-                if D[i, j] < diameter and theta[i] > 0:
-                    LG.rgb[i, j] = self.leaf_rgb_means\
-                        + self.leaf_rgb_SDs * npr.randn(3)
-        """
         return
