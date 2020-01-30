@@ -11,6 +11,6 @@ install:
   - python setup.py install
 #Run the tests
 script:
-  - pytest
+  - pytest --cov=LandscapeGenerator
 after_success:
   - coveralls
