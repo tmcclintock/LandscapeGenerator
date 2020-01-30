@@ -6,7 +6,10 @@ python:
 #Install dependencies
 install:
   - pip install -r requirements.txt
+  - pip install coveralls
   - python setup.py install
 #Run the tests
 script:
   - pytest
+after_success:
+  - coveralls
