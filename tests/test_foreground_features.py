@@ -23,6 +23,14 @@ def test_Tree_locations():
     FOV = [[-10, 20], [0, 360]]
     L = LG.LGenerator([M, N], field_of_view=FOV)
     L.add_feature(LGF.TreeFeature(phi=0))
+
+    #Test a tree that doesn't appear in the FOV
+    #It should be forcibly drawn for now, but this is not desirable
+    #TODO - fix trees that are outside the FOV
+    FOV = [[-10, 20], [0, 20]]
+    L = LG.LGenerator([M, N], field_of_view=FOV)
+    L.add_feature(LGF.TreeFeature(phi = -5, distance=100))
+    
     rgb = L.generate()
 
 if __name__ == "__main__":
