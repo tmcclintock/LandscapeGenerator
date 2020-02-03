@@ -15,16 +15,26 @@ def test_SkyFeature():
     M, N = 300, 200
     L = LG.LGenerator([M, N])
     L.add_feature(LGF.SkyFeature())
+
+    #Test that this sky feature doesn't generate anything
+    L.add_feature(LGF.SkyFeature(theta_boundary = 90))
+    
     rgb = L.generate()
     npt.assert_equal(len(rgb), M)
     npt.assert_equal(len(rgb[0]), N)
     npt.assert_equal(len(rgb[0][0]), 3)
     npt.assert_equal(rgb.shape, (M, N, 3))
 
+
+    
 def test_GrassFeature():
     M, N = 100, 50
     L = LG.LGenerator([M, N])
     L.add_feature(LGF.GrassFeature())
+
+    #Test that this grass feature doesn't generate anything
+    L.add_feature(LGF.GrassFeature(theta_boundary = -90))
+    
     rgb = L.generate()
     npt.assert_equal(len(rgb), M)
     npt.assert_equal(len(rgb[0]), N)
