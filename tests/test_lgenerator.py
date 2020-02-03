@@ -58,6 +58,16 @@ def test_reset_features():
     L.reset_canvas()
     rgb2 = L.generate(seed=1)
     npt.assert_equal(rgb1, rgb2)
-    
+
+def test_clear_features():
+    import LandscapeGenerator.BackgroundFeatures as LGF
+
+    M, N = 300, 200
+    L = LG.LGenerator([M, N])
+    L.add_feature(LGF.SkyFeature())
+    L.clear_features()
+    L.reset_canvas()
+    rgb3 = L.generate(seed=1)
+    npt.assert_equal(rgb3, np.zeros_like(rgb3))
 #if __name__ == "__main__":
 #    test_generate()
