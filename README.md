@@ -1,4 +1,4 @@
-# LandscapeGenerator [![Build Status](https://travis-ci.com/tmcclintock/LandscapeGenerator.svg?branch=master)](https://travis-ci.com/tmcclintock/LandscapeGenerator) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT) [![Coverage Status](https://coveralls.io/repos/github/tmcclintock/LandscapeGenerator/badge.svg?branch=master)](https://coveralls.io/github/tmcclintock/LandscapeGenerator?branch=master)
+# LandscapeGenerator [![Build Status](https://travis-ci.com/tmcclintock/LandscapeGenerator.svg?branch=master)](https://travis-ci.com/tmcclintock/LandscapeGenerator) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT) [![Coverage Status](https://coveralls.io/repos/github/tmcclintock/LandscapeGenerator/badge.svg?branch=master&service=github)](https://coveralls.io/github/tmcclintock/LandscapeGenerator?branch=master&service=github)
 
 Generate synthetic landscape images at low resolution. For use in diagnosing ML systems.
 
